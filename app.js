@@ -38,14 +38,14 @@ app.get("/compose", function (req, res) {
 });
 
 app.get("/posts/:postName", function (req, res) {
-  const requestedTitle = req.params.postName;
+  const requestedTitle = _.lowerCase(req.params.postName);
   Post.forEach(function (post) {
     const storedTitle = _.lowerCase(post.title);
-    const dataTitle = _.lowerCase(requestedTitle);
-    if (storedTitle == dataTitle) {
-      console.log("Match Found");
-    } else {
-      console.log("No Match Found");
+    if (storedTitle == requestedTitle) {
+      res.render("post", {
+        Title: post.title,
+        content: post.content,
+      });
     }
   });
 });
