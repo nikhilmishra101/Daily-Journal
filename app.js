@@ -53,7 +53,7 @@ app.get("/posts/:postId", function (req, res) {
   const requestedPostId = req.params.postId;
   Blog.findOne({ _id: requestedPostId }, function (err, post) {
     res.render("post", {
-      title: post.title,
+      title: post.Title,
       content: post.content,
     });
   });
@@ -71,7 +71,11 @@ app.post("/compose", function (req, res) {
     content: req.body.postBody,
   });
 
-  blog.save();
+  blog.save(function (err) {
+    if (!err) {
+      res.redirect("/");
+    }
+  });
 
   res.redirect("/");
 });
