@@ -29,10 +29,10 @@ const blogSchema = {
   content: String,
 };
 
-const Blog = mongoose.model("Blog", blogSchema);
+const Post = mongoose.model("Post", blogSchema);
 
 app.get("/", function (req, res) {
-  Blog.find({}, function (err, posts) {
+  Post.find({}, function (err, posts) {
     res.render("home", { startingContent: homeStartingContent, posts: posts });
   });
 });
@@ -51,22 +51,16 @@ app.get("/compose", function (req, res) {
 
 app.get("/posts/:postId", function (req, res) {
   const requestedPostId = req.params.postId;
-  Blog.findOne({ _id: requestedPostId }, function (err, post) {
+  Post.findOne({ _id: requestedPostId }, function (err, post) {
     res.render("post", {
-      title: post.Title,
+      title: post.title,
       content: post.content,
     });
   });
 });
 
 app.post("/compose", function (req, res) {
-  const post = {
-    title: req.body.postTitle,
-    content: req.body.postBody,
-  };
-
-  Post.push(post);
-  const blog = new Blog({
+  const blog = new Post({
     title: req.body.postTitle,
     content: req.body.postBody,
   });
@@ -76,8 +70,6 @@ app.post("/compose", function (req, res) {
       res.redirect("/");
     }
   });
-
-  res.redirect("/");
 });
 
 app.listen(3000, function () {
